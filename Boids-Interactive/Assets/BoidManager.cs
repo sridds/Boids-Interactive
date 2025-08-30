@@ -17,8 +17,17 @@ public class BoidManager : MonoBehaviour
 
         for(int i = 0; i < _maxBoidEntities; i++)
         {
-            _boidEntities[i] = Instantiate(_boidEntityPrefab, transform.position, Quaternion.identity);
+            _boidEntities[i] = Instantiate(_boidEntityPrefab, GetRandomPointInBounds(), Quaternion.identity);
         }
+    }
+
+    private Vector3 GetRandomPointInBounds()
+    {
+        float x = Random.Range(-_boidBounds.x, _boidBounds.x);
+        float y = Random.Range(-_boidBounds.y, _boidBounds.y);
+        float z = Random.Range(-_boidBounds.z, _boidBounds.z);
+
+        return (new Vector3(x, y, z) / 2.0f) + transform.position;
     }
 
     #region Editor
