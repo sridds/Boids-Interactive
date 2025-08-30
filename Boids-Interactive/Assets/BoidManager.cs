@@ -3,7 +3,6 @@ using UnityEngine;
 [System.Serializable]
 public struct BoidSettings
 {
-    public Vector3 boidBounds;
     public float minSpeed;
     public float maxSpeed;
     public float rotationSpeed;
@@ -26,6 +25,7 @@ public class BoidManager : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private int _maxBoidEntities;
+    [SerializeField] private Vector3 _spawnRange;
 
     [Header("Boid Settings")]
     [SerializeField] BoidSettings _settings;
@@ -53,9 +53,9 @@ public class BoidManager : MonoBehaviour
 
     private Vector3 GetRandomPointInBounds()
     {
-        float x = Random.Range(-_settings.boidBounds.x, _settings.boidBounds.x);
-        float y = Random.Range(-_settings.boidBounds.y, _settings.boidBounds.y);
-        float z = Random.Range(-_settings.boidBounds.z, _settings.boidBounds.z);
+        float x = Random.Range(-_spawnRange.x, _spawnRange.x);
+        float y = Random.Range(-_spawnRange.y, _spawnRange.y);
+        float z = Random.Range(-_spawnRange.z, _spawnRange.z);
 
         return (new Vector3(x, y, z) / 2.0f) + transform.position;
     }
@@ -64,13 +64,13 @@ public class BoidManager : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = new Color(0.2f, 0.8f, 0.8f, 0.1f);
-        Gizmos.DrawCube(transform.position, _settings.boidBounds);
+        Gizmos.DrawCube(transform.position, _spawnRange);
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(0.2f, 0.8f, 0.8f, 0.4f);
-        Gizmos.DrawCube(transform.position, _settings.boidBounds);
+        Gizmos.DrawCube(transform.position, _spawnRange);
     }
     #endregion
 }

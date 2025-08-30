@@ -14,18 +14,27 @@ public class BoidEntity : MonoBehaviour
 
     public void UpdateBoid(BoidEntity[] boids, int selfIndex)
     {
-        Vector3 seperationVelocity = Seperation(boids, selfIndex);
-        Vector3 alignmentVelocity = Alignment(boids, selfIndex);
-        Vector3 cohesionVelocity = Cohesion(boids, selfIndex);
+        Vector3 accel = Vector3.zero;
+
+        Vector3 seperationForce = Seperation(boids, selfIndex);
+        Vector3 alignmentForce = Alignment(boids, selfIndex);
+        Vector3 cohesionForce = Cohesion(boids, selfIndex);
 
         // Calculate new velocity
-        velocity += seperationVelocity;
-        velocity += alignmentVelocity;
-        velocity += cohesionVelocity;
-        velocity = GetClampedVelocity(velocity);
+        accel += seperationForce;
+        accel += alignmentForce;
+        accel += cohesionForce;
 
-        // bounce
-        BounceOffEdges();
+        if(IsOnCollisionCourse())
+        {
+            Vector3 collisionAvoidance;
+            Vector3 avoidanceForce;
+
+            //accel += avoidanceForce;
+        }
+
+        velocity += accel * Time.deltaTime;
+        velocity = GetClampedVelocity(velocity);
 
         // update position
         transform.position = transform.position + velocity * Time.deltaTime;
@@ -35,49 +44,34 @@ public class BoidEntity : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * settings.rotationSpeed);
     }
 
-    private void BounceOffEdges()
+    private bool IsOnCollisionCourse()
     {
-        // outside of the top boundary
-        if (transform.position.y > settings.boidBounds.y / 2.0f)
+        RaycastHit hit;
+        if(Physics.SphereCast(transform.position, 2.0f, velocity.normalized, out hit, 1.0f))
         {
-            velocity = Vector3.Reflect(velocity, Vector3.down);
-            //transform.position = new Vector3(transform.position.x, -settings.boidBounds.y / 2.0f, transform.position.z);
+            return true;
+        }
+        return false;
+    }
+
+    private Vector3 GetAvoidanceDirection()
+    {
+        /*
+        Vector3[] rays;
+
+        for(int i = 0; i < rays.Length; i++)
+        {
+            Vector3 dir = transform.TransformDirection(rays[i]);
+            Ray ray = new Ray(transform.position, dir);
+
+            if(!Physics.SphereCast(ray, 2.0f, 1.0f))
+            {
+                return dir;
+            }
         }
 
-        // outside of the bottom boundary
-        if (transform.position.y < -settings.boidBounds.y / 2.0f)
-        {
-            velocity = Vector3.Reflect(velocity, Vector3.up);
-            //transform.position = new Vector3(transform.position.x, settings.boidBounds.y / 2.0f, transform.position.z);
-        }
-
-        // outside of the top boundary
-        if (transform.position.z > settings.boidBounds.z / 2.0f)
-        {
-            velocity = Vector3.Reflect(velocity, -Vector3.forward);
-            //transform.position = new Vector3(transform.position.x, transform.position.y, -settings.boidBounds.z / 2.0f);
-        }
-
-        // outside of the bottom boundary
-        if (transform.position.z < -settings.boidBounds.z / 2.0f)
-        {
-            velocity = Vector3.Reflect(velocity, Vector3.forward);
-            //transform.position = new Vector3(transform.position.x, transform.position.y, settings.boidBounds.z / 2.0f);
-        }
-
-        // outside of the right boundary
-        if (transform.position.x > settings.boidBounds.x / 2.0f)
-        {
-            velocity = Vector3.Reflect(velocity, -Vector3.right);
-            //transform.position = new Vector3(-settings.boidBounds.x / 2.0f, transform.position.y, transform.position.z);
-        }
-
-        // outside of the left boundary
-        if (transform.position.x < -settings.boidBounds.x / 2.0f)
-        {
-            velocity = Vector3.Reflect(velocity, Vector3.right);
-            //transform.position = new Vector3(settings.boidBounds.x / 2.0f, transform.position.y, transform.position.z);
-        }
+        return Vector3.forward;*/
+        return Vector3.zero;
     }
 
     private Vector3 GetClampedVelocity(Vector3 curVel)
