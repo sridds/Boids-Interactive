@@ -6,7 +6,14 @@ public struct BoidSettings
     public Vector3 boidBounds;
     public float minSpeed;
     public float maxSpeed;
-    public float range;
+    public float rotationSpeed;
+
+    [Header("Range")]
+    public float seperationRange;
+    public float alignmentRange;
+    public float cohesionRange;
+
+    [Header("Constants")]
     public float seperationK;
     public float alignmentK;
     public float cohesionK;
