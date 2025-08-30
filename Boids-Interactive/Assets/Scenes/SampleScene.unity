@@ -2832,7 +2832,7 @@ Transform:
   m_GameObject: {fileID: 1583909807}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -7, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2868,8 +2868,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boidEntityPrefab: {fileID: 4288985216867238879, guid: 48c5e5ee3e5bba74b9378c89aad776bb, type: 3}
-  _boidBounds: {x: 40, y: 14, z: 40}
   _maxBoidEntities: 50
+  _settings:
+    boidBounds: {x: 40, y: 14, z: 40}
+    minSpeed: 4
+    maxSpeed: 4
+    range: 5
+    seperationK: 0.5
+    alignmentK: 0
+    cohesionK: 0
 --- !u!4 &1717162466
 Transform:
   m_ObjectHideFlags: 0
@@ -2879,7 +2886,7 @@ Transform:
   m_GameObject: {fileID: 1717162464}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
